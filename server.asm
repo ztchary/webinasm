@@ -197,20 +197,14 @@ handler:
 
 	mov rax, SYS_WRITE
 	mov edi, [rbp - 4]
-	mov rsi, http_start
-	mov rdx, http_start_len
+	mov rsi, http_resp
+	mov rdx, http_resp_len
 	syscall
 
 	mov rax, SYS_WRITE
 	mov rdi, [rbp - 4]
 	mov rsi, [rsp]
 	mov rdx, [rbp - 104]
-	syscall
-
-	mov rax, SYS_WRITE
-	mov rdi, [rbp - 4]
-	mov rsi, http_end
-	mov rdx, http_end_len
 	syscall
 
 	mov rax, SYS_MUNMAP
@@ -311,10 +305,8 @@ exit:
 section .data
 	err db `Failed to create server.\n`
 	errlen equ $ - err
-	http_start db `HTTP/1.1 200 OK\r\nConnection: close\r\n\r\n`
-	http_start_len equ $ - http_start
-	http_end db `\r\n\r\n`
-	http_end_len equ $ - http_end
+	http_resp db `HTTP/1.1 200 OK\r\nConnection: close\r\n\r\n`
+	http_resp_len equ $ - http_resp
 	http_404 db `HTTP/1.1 404 Not Found\r\nConnection: close\r\n\r\n<h1>404 Not Found</h1>\r\n\r\n`
 	http_404_len equ $ - http_404
 	index db "index.html", 0
