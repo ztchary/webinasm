@@ -9,11 +9,11 @@ AF_INET     equ 2
 SOCK_STREAM equ 1
 
 SHUT_RDWR   equ 3
-            
+
 CLONE_FLAG  equ 0x00010f00 ; CLONE_VM | CLONE_FS | CLONE_FILES | CLONE_SIGHAND | CLONE_THREAD
 
 O_RDONLY    equ 0
-            
+
 MMAP_RW     equ 0x3
 MMAP_STACK  equ 0x122 ; MAP_PRIVATE | MAP_ANONYMOUS | MAP_GROWSDOWN
 
@@ -167,13 +167,13 @@ send_dir:
 	add rsi, rax
 	mov al, [rsi - 1] ; d_type
 
-	mov rsi, dir_b
-
 	cmp al, DT_DIR
-	je .b1
+	setne al
+	movzx rax, al
 
-	inc rsi
-.b1:
+	mov rsi, dir_b
+	add rsi, rax
+
 	mov edi, [rbp - 4]
 	call write_cstr
 
